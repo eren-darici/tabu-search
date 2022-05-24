@@ -24,7 +24,10 @@ class TabooSearchSolver(object):
         with open(json_path, "r") as f:
             data = json.load(f)
 
-            data = {int(key): {int(key2): value2 for key2, value2 in value.items()} for key, value in data.items()}
+            try:
+                data = {int(key): {int(key2): value2 for key2, value2 in value.items()} for key, value in data.items()}
+            except:
+                pass
     
         return data
 
