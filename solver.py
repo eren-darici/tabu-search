@@ -3,7 +3,7 @@ import random
 from termcolor import colored
 
 
-class TabooSearchSolver(object):
+class TabuSearchSolver(object):
     def __init__(self, data_path: str,  taboo_list_size, seed=None) -> None:
         self.data = self.__load_data(data_path)
         if seed:
