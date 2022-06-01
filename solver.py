@@ -47,6 +47,16 @@ class TabuSearchSolver(object):
 
         return solution_copy
 
+    def __insertion(self, solution: list, node_idx: int) -> list:
+        """
+        Inserts a node into a solution.
+        """
+        solution_copy = solution.copy()
+
+        solution_copy.insert(node_idx, node_idx)
+
+        return solution_copy
+
     def __create_initial_solution(self, instances: dict, seed: int, show: bool = False) -> list:
         """
         Creates a random initial solution.
@@ -124,7 +134,7 @@ class TabuSearchSolver(object):
 
     def __generate_neighbors(self, solution: list) -> list:
         """
-        Generates neighbors of a solution.
+        Generates neighbors of a solution. with swap and insertion
         """
         neighbors = []
 
