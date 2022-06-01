@@ -1,4 +1,4 @@
-from solver import TabooSearchSolver
+from solver import TabuSearchSolver
 
-solver = TabooSearchSolver('data.json', taboo_list_size=2)
+solver = TabuSearchSolver('data.json', taboo_list_size=2)
 solver.solve(iteration=300)
