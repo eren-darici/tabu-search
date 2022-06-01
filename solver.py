@@ -1,6 +1,7 @@
 import json
 import random
 from termcolor import colored
+import matplotlib.pyplot as plt
 
 
 class TabuSearchSolver(object):
@@ -190,3 +191,16 @@ class TabuSearchSolver(object):
                 self.taboo_list.pop(0)
 
         return self.best_solution
+
+    def show_results_as_graph(self):
+        """
+        Show cost of neighbors at each iteration as graph.
+        """
+        neighbors = self.__generate_neighbors(self.current_solution)
+        values = []
+
+        for neighbor in neighbors:
+            values.append(self.__calculate_neighbor_value(neighbor))
+
+        plt.plot(values)
+        plt.show()
