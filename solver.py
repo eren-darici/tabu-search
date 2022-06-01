@@ -4,8 +4,12 @@ from termcolor import colored
 
 
 class TabooSearchSolver(object):
-    def __init__(self, data_path: str,  taboo_list_size, seed=42) -> None:
+    def __init__(self, data_path: str,  taboo_list_size, seed=None) -> None:
         self.data = self.__load_data(data_path)
+        if seed:
+            self.seed = seed
+        else:
+            self.seed = random.randint(0, 10000)
 
         self.initial_solution = self.__create_initial_solution(
             self.data, seed=seed, show=True)
@@ -26,10 +30,11 @@ class TabooSearchSolver(object):
             data = json.load(f)
 
             try:
-                data = {int(key): {int(key2): value2 for key2, value2 in value.items()} for key, value in data.items()}
+                data = {int(key): {int(key2): value2 for key2, value2 in value.items()}
+                        for key, value in data.items()}
             except:
                 pass
-    
+
         return data
 
     def __swap(self, solution: list, i, j) -> list:
@@ -41,7 +46,6 @@ class TabooSearchSolver(object):
         solution_copy[i], solution_copy[j] = solution_copy[j], solution_copy[i]
 
         return solution_copy
-
 
     def __create_initial_solution(self, instances: dict, seed: int, show: bool = False) -> list:
         """
@@ -95,8 +99,9 @@ class TabooSearchSolver(object):
 
             temp_value = self.data[lowest_node][highest_node]
             neighbor_value += temp_value
-        
-        return_cost = self.data[min(neighbor[0], neighbor[-1])][max(neighbor[0], neighbor[-1])]
+
+        return_cost = self.data[min(
+            neighbor[0], neighbor[-1])][max(neighbor[0], neighbor[-1])]
 
         return neighbor_value + return_cost
 
@@ -151,7 +156,7 @@ class TabooSearchSolver(object):
     def solve(self, iteration: int) -> list:
         """
         Solves the TSP problem using Taboo Search.
-        """ 
+        """
         for i in range(iteration):
             neighbors = self.__generate_neighbors(self.current_solution)
             # print(colored("Iteration:", "green"), i)
@@ -159,20 +164,19 @@ class TabooSearchSolver(object):
             best_neighbor = self.__get_best_neighbor(neighbors)
 
             if self.__is_solution_better(best_neighbor):
-                
+
                 self.current_solution = best_neighbor
                 self.best_solution = best_neighbor
-                self.best_solution_value = self.__calculate_neighbor_value(best_neighbor)
+                self.best_solution_value = self.__calculate_neighbor_value(
+                    best_neighbor)
                 temp_neighbor = best_neighbor.copy()
                 temp_neighbor.append(temp_neighbor[0])
-                print("Iteration:", i, "Best neighbor:", temp_neighbor, "Value:", self.best_solution_value)
-
-                
+                print("Iteration:", i, "Best neighbor:", temp_neighbor,
+                      "Value:", self.best_solution_value)
 
             self.taboo_list.append(self.current_solution[0])
 
             if len(self.taboo_list) > self.taboo_list_size:
                 self.taboo_list.pop(0)
-
 
         return self.best_solution
